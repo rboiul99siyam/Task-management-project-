@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{%block title%} Show Task {% endblock%}
+{%block content %}
+
+<div class="container d-flex flex-wrap gap-5 justify-content-around align-items-center mt-5 mb-5">
+  {% for post in data %}
+  <div class="card" style="width: 20rem">
+    <div class="card-body text-center shadow pb-5 ">
+      <h5 class="card-title ">Task Id : {{post.id}}</h5>
+      {% for taskModelNow in post.TaskModel.all %}
+      <h5 class="card-title">
+        Task Assing Date : {{taskModelNow.Task_Assign_Date}}
+      </h5>
+      <small> <span class="text-success fw-bold">Task Description</span> : {{taskModelNow.taskDescription}}</small>
+      {% if taskModelNow.is_completed %}
+      <h3 class="text-warning fw-bolder">Completed</h3>
+      {% else %}
+      <br>
+      <button class="btn btn-success"><a class="text-decoration-none text-light mx-4" href="{% url 'edit_post' post.id%}">Edit</a></button>
+      <button class="btn btn-danger"><a class="text-decoration-none text-light mx-2" href="{% url 'delete' post.id%}">Delete</a></button>
+      {% endif %}
+
+      {%endfor%}
+      <h5> <span class="text-success">Task Category :</span> {{post.Category_Name}} </h5>
+
+
+    </div>
+  </div>
+  {% endfor %}
+
+</div>
+
+{% endblock%}
