@@ -1,36 +1,39 @@
 from django.shortcuts import render, redirect
-
+from django.urls import reverse_lazy
 # Create your views here.
 from . import forms
 from . import models
 
+from django.views.generic import CreateView ,UpdateView ,DeleteView
 
-def add_category(res):
-    if res.method == "POST":
-        Model_cata = forms.TaskCategoryForm(res.POST)
-        if Model_cata.is_valid():
-            print(Model_cata.cleaned_data)
-            Model_cata.save()
-            return redirect("add_category")
-    else:
-        Model_cata = forms.TaskCategoryForm()
-    return render(res, "add_category.html", {"form": Model_cata})
+class Add(CreateView):
+    model = models.TaskCategory
+    form_class =  forms.TaskCategoryForm
+    template_name = 'add_category.html'
+    context_object_name = 'form'
+    def get_success_url(self , *args, **kwargs):
+        return reverse_lazy('add_category')
 
 
-def edit_post(res, id):
-    post = models.TaskCategory.objects.get(pk=id)
-    model_cata = forms.TaskCategoryForm(instance=post)
-    if res.method == "POST":
-        model_cata = forms.TaskCategoryForm(res.POST, instance=post)
-        if model_cata.is_valid():
-            model_cata.save()
-            return redirect('showtask')
-    else:
-        model_cata = forms.TaskCategoryForm()
-    return render(res,'add_task.html',{'form':model_cata})
 
 
-def delete(res, id):
-    post = models.TaskCategory.objects.get(pk=id)
-    post.delete()
-    return redirect('showtask')
+class Update (UpdateView):
+    model = models.TaskCategory
+    form = forms.TaskCategoryForm
+    template_name = 'add_task.html'
+    context_object_name = 'form'
+    pk_url_kwarg = 'id'
+    fields = '__all__'
+    def get_success_url(self,*args, **kwargs):
+        return reverse_lazy('showtask')
+
+
+
+
+class deteleNow(DeleteView):
+    model = models.TaskCategory
+    template_name = 'add_category.html'
+    pk_url_kwarg = 'id'
+    def get_success_url(self,*args,**Kwargs):
+        return reverse_lazy('showtask')
+
