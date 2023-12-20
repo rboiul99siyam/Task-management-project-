@@ -5,5 +5,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('taskModel/', include('TaskModel.urls')),
     path('taskCategory/', include('TaskCatagory.urls')),
-    path('', views.home, name='showtask' )
+    path('', views.Home.as_view(), name='showtask' )
 ]
